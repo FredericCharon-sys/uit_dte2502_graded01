@@ -11,29 +11,26 @@ import numpy as np
 
 
 class phosc_dataset(Dataset):
+
     def __init__(self, csvfile, root_dir, transform=None, calc_phosc=True):
         self.root_dir = root_dir
         self.transform = transform
+
+        # We create a new DataFrame by using the first two columns of the CSV-file.
         self.df_all = pd.read_csv(csvfile, usecols=["Image", "Word"])
+
+        # Now we add the PHOS and PHOC feature vectors, this is done by using the generate_vector functions
+        #   with each word as input
         self.df_all["phos"] = self.df_all['Word'].apply(generate_phos_vector)
         self.df_all["phoc"] = self.df_all['Word'].apply(generate_phoc_vector)
 
+        # For the PHOSC vector we concateante the PHOS and PHOC vectors. The PHOSC vector will be used again for the
+        #   loss functions
         if calc_phosc:
-            self.df_all['phosc'] = self.df_all['phos']
+            self.df_all['phosc'] = ''
             for i in range(len(self.df_all["phos"])):
                 self.df_all['phosc'][i] = np.concatenate((self.df_all["phos"][i], self.df_all["phoc"][i]))
 
-        print(len(self.df_all['phosc'][0]))
-        print(self.df_all)
-        # len phos-vector: 165
-        # len phoc-vector: 604
-
-        # Fill in your code here. You will populate self.df_all
-        # it should be pandas df with ["Image", "Word", "phos", "phoc", "phosc"] columns
-        # containing file name, word label, phoc, phoc, phosc features vector in each row
-        # phosc features vector can be created combining generate_phos_vector, generate_phoc_vector
-        # Note: How to use phoc, phoc or phosc of the df in a batch is up to you.
-        # in the __getitem__ below the phosc vector is used in the batches.
 
     def __getitem__(self, index):
         img_path = os.path.join(self.root_dir, self.df_all.iloc[index, 0])

@@ -40,7 +40,7 @@ def get_args_parser():
 
     # Dataloader settings
     parser.add_argument('--batch_size', type=int, default=32, help='number of samples per iteration in the epoch')
-    parser.add_argument('--num_workers', default=8, type=int)   # changed from 10 to 8
+    parser.add_argument('--num_workers', default=10, type=int)
 
     # optimizer settings
     parser.add_argument('--lr', type=float, default=0.0001, help='The learning rate')

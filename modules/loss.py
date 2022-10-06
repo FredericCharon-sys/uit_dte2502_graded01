@@ -13,24 +13,16 @@ class PHOSCLoss(nn.Module):
 
     def forward(self, y: dict, targets: torch.Tensor):
 
-        '''
+        """
         y is a dictionary, containing the outputs from our model. It has two entries, one for PHOS, containing the
         PHOS-layer output and one for PHOC, containing the output from the PHOC layers.
 
-        The target Tensor conatins
-        '''
-        # Apply the loss on PHOS features this is a regression loss
-        # Note: This loss should be applicable to the PHOS part of the
-        # output which is the first part of the output.
+        The target Tensor contains the PHOSC vector we stored in our dataset. That's why it has to be split into
+            two parts, the PHOS and the PHOC  vector.
+        """
+
         phos_loss = self.phos_w * F.mse_loss(y['phos'], targets[:, :165])
 
-        #for i in y['phoc']:
-           # print(i)
-
-        #aloss = nn.functional.mse_loss(y['phoc'], targets)
-        # Apply the loss on PHOC features this is a classification loss
-        # Note: This loss should be applicable to the PHOC part of the
-        # output which is the later part of the output.
         phoc_loss = self.phoc_w * F.binary_cross_entropy(y['phoc'], targets[:, 165:])
 
         loss = phos_loss + phoc_loss
