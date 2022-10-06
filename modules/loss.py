@@ -15,7 +15,9 @@ class PHOSCLoss(nn.Module):
 
         '''
         y is a dictionary, containing the outputs from our model. It has two entries, one for PHOS, containing the
-        PHOS-layer output and one for PHOC, containing the output from the PHOC layers
+        PHOS-layer output and one for PHOC, containing the output from the PHOC layers.
+
+        The target Tensor conatins
         '''
         # Apply the loss on PHOS features this is a regression loss
         # Note: This loss should be applicable to the PHOS part of the
