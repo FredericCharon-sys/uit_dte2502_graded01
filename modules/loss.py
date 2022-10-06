@@ -13,7 +13,10 @@ class PHOSCLoss(nn.Module):
 
     def forward(self, y: dict, targets: torch.Tensor):
 
-        #print(len(targets))
+        '''
+        y is a dictionary, containing the outputs from our model. It has two entries, one for PHOS, containing the
+        PHOS-layer output and one for PHOC, containing the output from the PHOC layers
+        '''
         # Apply the loss on PHOS features this is a regression loss
         # Note: This loss should be applicable to the PHOS part of the
         # output which is the first part of the output.
