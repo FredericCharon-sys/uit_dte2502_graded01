@@ -31,6 +31,9 @@ class phosc_dataset(Dataset):
             for i in range(len(self.df_all["phos"])):
                 self.df_all['phosc'][i] = np.concatenate((self.df_all["phos"][i], self.df_all["phoc"][i]))
 
+        print("length of phos vector: ", len(self.df_all['phos'][0]))
+        print("length of phoc vector: ", len(self.df_all['phoc'][0]))
+        print("length of phosc vector: ", len(self.df_all['phosc'][0]))
 
     def __getitem__(self, index):
         img_path = os.path.join(self.root_dir, self.df_all.iloc[index, 0])
